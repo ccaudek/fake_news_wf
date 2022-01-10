@@ -1,0 +1,404 @@
+# Script name: test_external_validation.R
+# Project: fake news.
+# Script purpose: validation of truth discernment analysis.
+# @author: Corrado Caudek <corrado.caudek@unifi.it>
+# Date Created: Thu Nov 25 14:18:52 2021
+# Last Modified Date: Fri Dec 10 22:48:22 2021
+#
+# 👉
+
+
+# 1.0 LIBRARIES -----------------------------------------------------------
+
+suppressPackageStartupMessages({
+  # Data Manipulation:
+  library("tidyr") # pivot_longer
+  library("tidyverse")
+  library("purrr") # *map*
+  library("performance") # outliers
+  library("here")
+  # Modeling:
+  library("cmdstanr")
+  library("posterior") # as_draws_df
+  library("brms")
+  library("broom.mixed")
+  library("tidybayes") # spread_draws
+  library("projpred")
+  # Graphics:
+  library("bayesplot")
+  color_scheme_set("brightblue")
+  library("patchwork")
+})
+
+source(here("code", "functions", "funs_for_wrangling_data.R"))
+source(here("code", "functions", "funs_for_figures.R"))
+source(here("code", "functions", "funs_for_fitting_models.R"))
+source(here("code", "functions", "funs_for_varselection.R"))
+
+
+# 2.0 GET DATA ------------------------------------------------------------
+
+d <- suppressWarnings(get_and_wrangle_data())
+
+
+# 3.0 DATA SPLIT ----------------------------------------------------------
+
+# Training data: political news data.
+pol_dat <- d %>%
+  dplyr::filter(news == "political") %>%
+  mutate(
+    sex = if_else(sex == "Female", -0.5, 0.5)
+  )
+nrow(pol_dat)
+# [1] 460
+
+# Test data: COVID-19 news data.
+covid_dat <- d %>%
+  dplyr::filter(news == "covid") %>%
+  mutate(
+    sex = if_else(sex == "Female", -0.5, 0.5)
+  )
+nrow(covid_dat)
+# [1] 653
+
+
+# 4.0 POLITICAL NEWS DATA -------------------------------------------------
+
+# * 4.1 Reference model ----
+
+# Model's fit with all 14 predictors
+td_ref_pol_fit <- 
+  get_td_reference_fit(pol_dat, "td_ref_pol_fit")
+
+print(summary(td_ref_pol_fit), digits = 3)
+#       Estimate Est.Error l-95% CI u-95% CI  Rhat Bulk_ESS Tail_ESS
+# sigma    0.810     0.027    0.759    0.866 1.000    55347    28895
+
+brms::bayes_R2(td_ref_pol_fit)
+#     Estimate  Est.Error      Q2.5     Q97.5
+# R2 0.3529402 0.02835508 0.2949798 0.4060387
+
+pp_check(td_ref_pol_fit, ndraws = 50, alpha = 0.5) +
+  labs(x = "Political news truth discernment")
+
+loo(td_ref_pol_fit)
+# Computed from 40000 by 460 log-likelihood matrix
+#
+#          Estimate   SE
+# elpd_loo   -563.9 15.3
+# p_loo        16.2  1.2
+# looic      1127.9 30.6
+#
+#   Monte Carlo SE of elpd_loo is 0.0.
+#
+# All Pareto k estimates are good (k < 0.5).
+
+plot(loo(td_ref_pol_fit))
+
+yhat_reference_14 <- predict(td_ref_pol_fit)[, 1]
+cor(yhat_reference_14, pol_dat$discernment)^2
+# [1] 0.3491219
+
+fixef(td_ref_pol_fit) %>%
+  round(3)
+#           Estimate Est.Error   Q2.5  Q97.5
+# Intercept    0.687     0.109  0.474  0.899
+# age          0.102     0.042  0.019  0.185
+# sex          0.289     0.084  0.124  0.453
+# educ         0.122     0.042  0.040  0.203
+# poli         0.227     0.044  0.142  0.314
+# spir         0.082     0.057 -0.031  0.194
+# agsu        -0.029     0.090 -0.207  0.148
+# conv        -0.256     0.085 -0.422 -0.090
+# miis        -0.160     0.057 -0.272 -0.048
+# rfsp        -0.005     0.067 -0.138  0.127
+# rfsn         0.033     0.060 -0.084  0.149
+# para         0.031     0.047 -0.060  0.122
+# cosp        -0.248     0.048 -0.342 -0.153
+# crit         0.131     0.042  0.049  0.213
+# conf        -0.092     0.041 -0.172 -0.011
+
+
+# * 4.2 Subset model based on the 1SE rule ----
+
+varsel_td_pol <-
+  get_cv_varsel_obj(td_ref_pol_fit, "varsel_td_pol")
+
+summary(varsel_td_pol)
+projpred::solution_terms(varsel_td_pol) # selection order of the variables
+# "cosp" "poli" "sex"  "educ" "crit" "age"  "conv" "miis" "spir"
+# "conf" "para" "rfsn" "agsu" "rfsp"
+projpred::suggest_size(varsel_td_pol)
+# [1] 8
+projpred::solution_terms(varsel_td_pol)[
+  1:projpred::suggest_size(varsel_td_pol)
+]
+
+# Extract draws of the linear predictor from the predictive
+# distribution of the projected submodel or submodels.
+preds_reference_14 <- 
+  projpred::proj_linpred(
+    varsel_td_pol,
+    newdata = pol_dat,
+    nterms = 14,
+    integrated = TRUE
+)
+attributes(preds_reference_14)
+# $names
+# [1] "pred" "lpd"
+length(preds_reference_14$pred)
+# [1] 460
+cor(yhat_reference_14, preds_reference_14$pred)
+# [1] 0.99998
+
+# Perform projection onto submodels of selected sizes or a specified feature
+# combination.
+proj1 <- projpred::project(
+  varsel_td_pol,
+  nterms = projpred::suggest_size(varsel_td_pol),
+  seed = 123,
+  ndraws = 2000
+)
+attributes(proj1)
+# $names
+# [1] "dis"                "kl"                 "weights"
+# [4] "solution_terms"     "sub_fit"            "family"
+# [7] "p_type"             "intercept"          "extract_model_data"
+# [10] "refmodel"
+#
+# $class
+# [1] "projection"
+
+# predvsreal_reference_fit <- tibble(
+#   predicted = preds_reference_14$pred,
+#   real = pol_dat$discernment
+# ) %>%
+#   mutate(
+#     error = predicted - real
+#   )
+
+# predvsreal_reference_fit <- tibble(
+#   predicted = predict(reference_fit)[, 1],
+#   real = pol_dat$discernment
+#   ) %>%
+#   mutate(
+#     error = predicted - real
+#   )
+
+# Equivalent:
+# predvsreal_reference_fit <- tibble(
+#   predicted = preds_reference_14$pred,
+#   real = pol_dat$discernment
+# ) %>%
+#   mutate(
+#     error = predicted - real
+#   )
+
+# Compute the mean of the predictive distribution and evaluates the
+# log density at the training points using the 8 most relevant variables.
+pred_train_subset <- projpred::proj_linpred(
+  varsel1,
+  newdata = pol_dat,
+  nterms = projpred::suggest_size(varsel1),
+  integrated = TRUE
+)
+
+predvsreal_subset_fit <- tibble(
+  predicted = pred_train_subset$pred,
+  real = pol_dat$discernment
+) %>%
+  mutate(
+    error = predicted - real
+  )
+
+# RMSE subset
+round(sqrt(mean(predvsreal_subset_fit$error^2)), 3)
+# [1] 0.805
+
+# Correlation between the submodel's predicted values and the y data.
+cor(pred_train_subset$pred, pol_dat$discernment)
+# [1] 0.5765503
+
+# R2 of the submodel
+cor(pred_train_subset$pred, pol_dat$discernment)^2
+# [1] 0.3324102
+
+
+# * 4.3 Subset fit with optimal coefficients ----
+
+td_proj_pol_fit <- get_td_proj_fit(
+  pol_dat,
+  varsel_td_pol,
+  "td_proj_pol_fit"
+)
+
+plot(loo(td_proj_pol_fit))
+
+# The projected submodel's R2 is very similar (but not identical) when
+# computed with projpred and with bayes_R2().
+bayes_R2(td_proj_pol_fit, cores = 4) %>%
+  round(3)
+#    Estimate Est.Error  Q2.5 Q97.5
+# R2    0.335     0.029 0.275  0.39
+
+print(summary(td_proj_pol_fit), 3)
+#       Estimate Est.Error l-95% CI u-95% CI  Rhat Bulk_ESS Tail_ESS
+# sigma    0.815     0.027    0.764    0.870 1.000    73356    31807
+
+# The same result is obtained when using projpred::proj_linpred() or
+# fitting again the data with a subset of predictors.
+cor(pred_train_subset$pred, predict(td_proj_pol_fit)[, 1])
+# [1] 0.99997
+# So, projpred::proj_linpred() does not seem to be using the same coefficients
+# as in the complete model.
+
+# Correlation between the predicted values of the submodel and the
+# predicted values of the full model.
+cor(pred_train_subset$pred, predict(td_proj_pol_fit)[, 1])
+# [1] 0.97615
+
+# Plot of predicted values from the subset model and predicted values from
+# the complete model.
+ggplot() +
+  geom_point(aes(x = pred_train_subset$pred, predict(reference_fit)[, 1])) +
+  geom_abline(slope = 1, color = "red") +
+  labs(x = "yhat submodel", y = "yhat complete model")
+
+# Plot of predicted values from the complete model and the observed data.
+ggplot() +
+  geom_point(aes(x = predict(reference_fit)[, 1], pol_dat$discernment)) +
+  geom_abline(slope = 1, color = "red") +
+  labs(x = "yhat complete model", y = "y")
+
+# Plot of predicted values from the subset model and the observed data.
+ggplot() +
+  geom_point(aes(x = pred_train_subset$pred, pol_dat$discernment)) +
+  geom_abline(slope = 1, color = "red") +
+  labs(x = "yhat submodel", y = "y")
+
+# CONCLUSION: When using 8 instead of 14 predictors, R2 decreases from
+#  0.353 to 0.332.
+
+
+# 5.0 COVID-19 data -------------------------------------------------------
+
+# The submodel is validated on the COVID-19 data.
+
+pred_test <- projpred::proj_linpred(
+  varsel1,
+  newdata = covid_dat,
+  nterms = suggest_size(varsel1),
+  integrated = TRUE
+)
+
+attributes(pred_test)
+# $names
+# [1] "pred" "lpd"
+length(pred_test$pred)
+# [1] 651
+
+# This is R2 with the 8 predictors seleced from the political news data.
+cor(pred_test$pred, covid_dat$discernment)^2
+# [1] 0.28385
+# This is the R2 for the COVID-19 data, when the predicted values are computed
+# by using the 8 predictors selected from the political news data, with the
+# same coefficients computed from the political news data.
+
+# Now, for the COVID-19 data, let's compute the optimal
+# coefficients for the 8 predictors selected from the
+# political news data.
+
+td_proj_covid_fit <- get_td_proj_fit(
+  covid_dat,
+  varsel_td_pol,
+  "td_proj_covid_fit"
+)
+
+print(summary(td_proj_covid_fit), 3)
+#       Estimate Est.Error l-95% CI u-95% CI  Rhat Bulk_ESS Tail_ESS
+# sigma    0.750     0.021    0.710    0.792 1.000    74007    30588
+
+# Correlation of the predicted scores when using the optimal coefficients and
+# the coefficients computed from the plitical news data.
+cor(pred_test$pred, predict(td_proj_covid_fit)[, 1])
+# [1] 0.94226
+
+bayes_R2(td_proj_covid_fit, cores = 4)
+#    Estimate Est.Error    Q2.5   Q97.5
+# R2  0.32163   0.02453 0.27196 0.36794
+
+
+# 
+# For comparison, let's examine the full model for the COVID-19 news data.
+# Model's fit with all 14 predictors
+td_ref_covid_fit <-
+  get_td_reference_fit(covid_dat, "td_ref_covid_fit")
+
+brms::bayes_R2(td_ref_covid_fit) %>%
+  round(3)
+#    Estimate Est.Error  Q2.5 Q97.5
+# R2    0.336     0.024 0.287 0.381
+
+print(summary(td_ref_covid_fit), 3)
+#       Estimate Est.Error l-95% CI u-95% CI  Rhat Bulk_ESS Tail_ESS
+# sigma    0.746     0.021    0.706    0.789 1.000    56971    29340
+
+
+# COVID-19 news data.
+print(fixef(td_proj_covid_fit), 3)
+#           Estimate Est.Error     Q2.5   Q97.5
+# Intercept  -0.3515    0.0480 -0.44557 -0.2581
+# cosp       -0.2439    0.0351 -0.31270 -0.1755
+# poli        0.0636    0.0320  0.00112  0.1261
+# sex         0.1275    0.0676 -0.00481  0.2602
+# educ        0.0903    0.0302  0.03100  0.1495
+# crit        0.1773    0.0298  0.11907  0.2353
+# age         0.1786    0.0334  0.11305  0.2445
+# conv       -0.1218    0.0489 -0.21692 -0.0256
+# miis       -0.1821    0.0308 -0.24185 -0.1212
+
+# Political news data.
+print(fixef(td_proj_pol_fit), 3)
+#           Estimate Est.Error    Q2.5   Q97.5
+# Intercept    0.649    0.0885  0.4753  0.8243
+# cosp        -0.252    0.0459 -0.3416 -0.1619
+# poli         0.206    0.0411  0.1261  0.2873
+# sex          0.289    0.0848  0.1237  0.4544
+# educ         0.135    0.0415  0.0535  0.2161
+# crit         0.130    0.0413  0.0488  0.2110
+# age          0.121    0.0408  0.0403  0.2001
+# conv        -0.217    0.0787 -0.3717 -0.0610
+# miis        -0.132    0.0538 -0.2376 -0.0266
+
+
+# Create and save R2 plot.
+plot_R2_distributions(
+  td_ref_covid_fit,
+  td_proj_covid_fit,
+  "Bayesian R-squared\nTruth discernment about COVID-19 news data",
+  "R2_td_ref_covid_vs_td_proj_covid"
+)
+
+# Create and save varsel plot for the complete model for the political
+# news data and the projected submodel with 8 predictors.
+save_varsel_plot(varsel_td_pol, pol_dat, td_ref_pol_fit)
+
+
+if (0) {
+  pred_test_tot <- proj_linpred(
+    varsel1,
+    newdata = covid_dat,
+    nterms = 14,
+    integrated = TRUE
+  )
+
+  cor(pred_test_tot$pred, covid_dat$discernment)^2
+  # [1] 0.26386
+
+  sum(pred_test_tot$lpd)
+  # sd(pred_test_tot$lpd)
+  sum(pred_test$lpd)
+  # sd(pred_test$lpd)
+}
+
+## End of file (eof). ---------- 

@@ -1,0 +1,29 @@
+Building DAG of jobs...
+Using shell: /bin/bash
+Provided cores: 4
+Rules claiming more threads will be scaled down.
+Job stats:
+job                 count    min threads    max threads
+----------------  -------  -------------  -------------
+my_render_report        1              1              1
+total                   1              1              1
+
+Select jobs to execute...
+
+[Fri Jan  7 14:35:14 2022]
+rule my_render_report:
+    input: scripts/reports/report2.Rmd, scripts/reports/render.R
+    output: my_report.html
+    log: my_render_report.txt
+    jobid: 0
+    resources: tmpdir=/var/folders/hl/dt523djx7_q7xjrthzjpdvc40000gn/T
+
+Waiting at most 5 seconds for missing files.
+MissingOutputException in line 47 of /Users/corrado/Documents/snakemake_workflows/snakemake_playground/playground/workflow/Snakefile:
+Job Missing files after 5 seconds:
+my_report.html
+This might be due to filesystem latency. If that is the case, consider to increase the wait time with --latency-wait.
+Job id: 0 completed successfully, but some output files are missing. 0
+Shutting down, this might take some time.
+Exiting because a job execution failed. Look above for error message
+Complete log: /Users/corrado/Documents/snakemake_workflows/snakemake_playground/playground/workflow/.snakemake/log/2022-01-07T143514.020270.snakemake.log

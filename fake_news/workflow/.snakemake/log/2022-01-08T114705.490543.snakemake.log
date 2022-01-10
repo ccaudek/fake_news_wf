@@ -1,0 +1,3 @@
+TypeError in line 33 of /Users/corrado/Documents/snakemake_workflows/snakemake_playground/playground/workflow/Snakefile:
+unhashable type: 'set'
+  File "/Users/corrado/Documents/snakemake_workflows/snakemake_playground/playground/workflow/Snakefile", line 33, in <module>

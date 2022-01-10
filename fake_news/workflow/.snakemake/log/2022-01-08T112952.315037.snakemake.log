@@ -1,0 +1,3 @@
+NameError in line 23 of /Users/corrado/Documents/snakemake_workflows/snakemake_playground/playground/workflow/Snakefile:
+name 'path' is not defined
+  File "/Users/corrado/Documents/snakemake_workflows/snakemake_playground/playground/workflow/Snakefile", line 23, in <module>

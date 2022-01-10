@@ -1,0 +1,4 @@
+TypeError in line 33 of /Users/corrado/Documents/snakemake_workflows/snakemake_playground/playground/workflow/Snakefile:
+expected str, bytes or os.PathLike object, not set
+  File "/Users/corrado/Documents/snakemake_workflows/snakemake_playground/playground/workflow/Snakefile", line 33, in <module>
+  File "/opt/anaconda3/lib/python3.8/posixpath.py", line 76, in join

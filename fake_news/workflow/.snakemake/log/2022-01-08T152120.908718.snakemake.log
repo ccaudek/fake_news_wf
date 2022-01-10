@@ -1,0 +1,35 @@
+Building DAG of jobs...
+Using shell: /bin/bash
+Provided cores: 4
+Rules claiming more threads will be scaled down.
+Job stats:
+job          count    min threads    max threads
+---------  -------  -------------  -------------
+fit_model        1              1              1
+total            1              1              1
+
+Select jobs to execute...
+
+[Sat Jan  8 15:21:21 2022]
+rule fit_model:
+    input: ../results/data/processed/penguin_subset.rds
+    output: ../results/brms/fit_01.rds
+    log: ../results/logs/fit_model.log
+    jobid: 0
+    resources: tmpdir=/var/folders/hl/dt523djx7_q7xjrthzjpdvc40000gn/T
+
+[Sat Jan  8 15:21:21 2022]
+Error in rule fit_model:
+    jobid: 0
+    output: ../results/brms/fit_01.rds
+    log: ../results/logs/fit_model.log (check log file(s) for error message)
+
+RuleException:
+WorkflowError in line 10 of /Users/corrado/Documents/snakemake_workflows/snakemake_playground/playground/workflow/rules/brm_fit_model.smk:
+Failed to open source file /Users/corrado/Documents/snakemake_workflows/snakemake_playground/playground/workflow/rules/scripts/analysis/brm_fit.R
+FileNotFoundError: [Errno 2] No such file or directory: '/Users/corrado/Documents/snakemake_workflows/snakemake_playground/playground/workflow/rules/scripts/analysis/brm_fit.R'
+  File "/Users/corrado/Documents/snakemake_workflows/snakemake_playground/playground/workflow/rules/brm_fit_model.smk", line 10, in __rule_fit_model
+  File "/opt/anaconda3/lib/python3.8/concurrent/futures/thread.py", line 57, in run
+Shutting down, this might take some time.
+Exiting because a job execution failed. Look above for error message
+Complete log: /Users/corrado/Documents/snakemake_workflows/snakemake_playground/playground/workflow/.snakemake/log/2022-01-08T152120.908718.snakemake.log

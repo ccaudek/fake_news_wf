@@ -1,0 +1,3 @@
+TypeError in line 19 of /Users/corrado/Documents/snakemake_workflows/snakemake_playground/playground/workflow/Snakefile:
+'property' object is not callable
+  File "/Users/corrado/Documents/snakemake_workflows/snakemake_playground/playground/workflow/Snakefile", line 19, in <module>

@@ -1,0 +1,32 @@
+Building DAG of jobs...
+Using shell: /bin/bash
+Provided cores: 4
+Rules claiming more threads will be scaled down.
+Job stats:
+job             count    min threads    max threads
+------------  -------  -------------  -------------
+fit_model           1              1              1
+make_report         1              1              1
+save_figures        1              1              1
+save_table          1              1              1
+summary_fit         1              1              1
+targets             1              1              1
+total               6              1              1
+
+Select jobs to execute...
+
+[Sun Jan  9 11:41:05 2022]
+rule save_figures:
+    input: scripts/data/penguins.csv
+    output: ../results/plots/figure_1.pdf, ../results/plots/figure_2.png, ../results/data/processed/penguin_subset.rds
+    log: ../results/logs/save_figures.log
+    jobid: 1
+    resources: tmpdir=/var/folders/hl/dt523djx7_q7xjrthzjpdvc40000gn/T
+
+[Sun Jan  9 11:41:08 2022]
+Finished job 1.
+1 of 6 steps (17%) done
+Select jobs to execute...
+ProtectedOutputException in line 2 of /Users/corrado/Documents/snakemake_workflows/snakemake_playground/playground/workflow/rules/brm_fit_model.smk:
+Write-protected output files for rule fit_model:
+../results/brms/fit_01.rds

@@ -1,0 +1,64 @@
+Building DAG of jobs...
+Using shell: /bin/bash
+Provided cores: 4
+Rules claiming more threads will be scaled down.
+Job stats:
+job               count    min threads    max threads
+--------------  -------  -------------  -------------
+make_histogram        1              1              1
+make_report           1              1              1
+save_figures          1              1              1
+save_table            1              1              1
+targets               1              1              1
+total                 5              1              1
+
+Select jobs to execute...
+
+[Sat Jan  8 09:05:14 2022]
+rule make_histogram:
+    input: scripts/data/penguins.csv
+    output: ../results/plots/hist_1.pdf
+    log: ../results/logs/make_histogram.log
+    jobid: 3
+    resources: tmpdir=/var/folders/hl/dt523djx7_q7xjrthzjpdvc40000gn/T
+
+[Sat Jan  8 09:05:14 2022]
+rule save_figures:
+    input: scripts/data/penguins.csv
+    output: ../results/plots/figure_1.pdf, ../results/plots/figure_2.pdf, ../results/data/processed/penguin_subset.rds
+    log: ../results/logs/save_figures.log
+    jobid: 1
+    resources: tmpdir=/var/folders/hl/dt523djx7_q7xjrthzjpdvc40000gn/T
+
+[Sat Jan  8 09:05:16 2022]
+Finished job 3.
+1 of 5 steps (20%) done
+[Sat Jan  8 09:05:17 2022]
+Finished job 1.
+2 of 5 steps (40%) done
+Select jobs to execute...
+
+[Sat Jan  8 09:05:17 2022]
+rule save_table:
+    input: ../results/data/processed/penguin_subset.rds
+    output: ../results/tables/tab_1.txt
+    log: ../results/logs/save_table.log
+    jobid: 2
+    resources: tmpdir=/var/folders/hl/dt523djx7_q7xjrthzjpdvc40000gn/T
+
+[Sat Jan  8 09:05:18 2022]
+Finished job 2.
+3 of 5 steps (60%) done
+Select jobs to execute...
+
+[Sat Jan  8 09:05:18 2022]
+rule make_report:
+    input: scripts/data/penguins.csv, ../results/data/processed/penguin_subset.rds, ../results/tables/tab_1.txt, ../results/plots/figure_2.pdf
+    output: ../results/reports/report.html
+    log: ../results/logs/make_report.log
+    jobid: 4
+    resources: tmpdir=/var/folders/hl/dt523djx7_q7xjrthzjpdvc40000gn/T
+
+WildcardError in line 42 of /Users/corrado/Documents/snakemake_workflows/snakemake_playground/playground/workflow/Snakefile:
+Wildcards in params cannot be determined from output files. Note that you have to use a function to deactivate automatic wildcard expansion in params strings, e.g., `lambda wildcards: '{test}'`. Also see https://snakemake.readthedocs.io/en/stable/snakefiles/rules.html#non-file-parameters-for-rules:
+'my_basedir'

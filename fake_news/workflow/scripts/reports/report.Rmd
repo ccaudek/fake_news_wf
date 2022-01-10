@@ -1,0 +1,121 @@
+---
+title: "Test Report"
+author:
+    - "Corrado Caudek"
+date: "`r format(Sys.time(), '%d %B %Y')`"
+params:
+   rmd: "report.Rmd"
+output:
+  html_document:
+    highlight: tango
+    number_sections: no
+    theme: default
+    toc: yes
+    toc_depth: 4
+    toc_float:
+      collapsed: no
+      smooth_scroll: yes
+---
+
+
+```{r}
+suppressPackageStartupMessages({
+  library("tidyverse")
+  library("knitr")
+  library("rmarkdown")
+  library("here")
+})
+```
+
+```{r, echo = FALSE}
+opts_chunk$set(
+  tidy = FALSE,
+  cache = FALSE,
+  echo = TRUE,
+  warning = FALSE,
+  message = FALSE
+  # dpi = 100,
+  # fig.retina = 2,
+  # fig.align = "center",
+  # fig.width = 400/72,
+  # fig.height = 400/72
+  )
+```
+
+## A title
+
+This is an R Markdown document.  Here I print the path that is currently used:
+
+```{r}
+getwd()
+```
+
+This script uses the data subset `r snakemake@input[["subset_data"]]` that has been extracted from `r snakemake@input[["data"]]`.
+
+Let's make a summary of the data:
+
+```{r}
+d <- readRDS(snakemake@input[["subset_data"]])
+summary(d)
+```
+
+Here I generate a plot from the input data:
+
+```{r}
+d %>%
+    ggplot(
+        aes(flipper_length_mm, body_mass_g)
+    ) +
+    geom_point()
+```
+
+### Syntax note
+
+Here I print a path passed through the snakefile object. Here it is:
+
+`r snakemake@input[["table_data"]]`
+
+Note the syntax used in the .smk rule: `rules.save_table.output.tab1`.
+
+### Displaying the content of an external .txt file
+
+I read the address of the file:
+
+```{r}
+foo <- snakemake@input[["table_data"]]
+foo
+```
+
+The address in the object `foo` is enclosed in quotes. This is the argument of the function `readLines()`.  With the following syntax, I get the desired result. The chunk needs the specification `{r comment=''}`:
+
+```{r comment=''}
+cat(readLines(foo), sep = '\n')
+```
+
+## Include pdf image
+
+### First method
+
+The problem is that the pdf files of the figures are stored in the `results`,
+directory, which is one level up from the working directory specifyed by
+`here::here()`. The simplest solution is to pass the address of the image with
+`snakemake@params`:
+
+```{r first-method, out.width = '80%'}
+knitr::include_graphics(snakemake@params[["pdf_fig1"]])
+```
+
+### Second method
+
+If the file is in a subset folder from the working directory, it is possible to
+use `here::here()`. In this example, the file is located in the same folder as
+the rmd script being executed:
+
+```{r, second-method, out.width = '80%'}
+knitr::include_graphics(here::here("scripts", "reports", "figure_1.pdf"))
+```
+
+
+
+## Source
+<a download="report.Rmd" href="`r base64enc::dataURI(file = params$rmd, mime = 'text/rmd', encoding = 'base64')`">R Markdown source file (to produce this document)</a>

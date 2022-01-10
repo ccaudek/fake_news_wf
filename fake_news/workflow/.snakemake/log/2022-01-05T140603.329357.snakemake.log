@@ -1,0 +1,57 @@
+Building DAG of jobs...
+Using shell: /bin/bash
+Provided cores: 4
+Rules claiming more threads will be scaled down.
+Job stats:
+job               count    min threads    max threads
+--------------  -------  -------------  -------------
+all                   1              1              1
+make_histogram        1              1              1
+make_report           1              1              1
+save_table            1              1              1
+total                 4              1              1
+
+Select jobs to execute...
+
+[Wed Jan  5 14:06:03 2022]
+rule make_histogram:
+    input: scripts/figures/hist_penguins.R, scripts/data/penguins.csv
+    output: ../results/plots/hist_1.pdf
+    log: ../results/logs/make_histogram.log
+    jobid: 4
+    resources: tmpdir=/var/folders/hl/dt523djx7_q7xjrthzjpdvc40000gn/T
+
+
+[Wed Jan  5 14:06:03 2022]
+rule make_report:
+    input: ../results/data/processed/penguin_subset.rds, ../results/plots/figure_2.pdf
+    output: ../results/reports/report.html
+    jobid: 3
+    resources: tmpdir=/var/folders/hl/dt523djx7_q7xjrthzjpdvc40000gn/T
+
+[Wed Jan  5 14:06:03 2022]
+rule save_table:
+    input: ../results/data/processed/penguin_subset.rds
+    output: ../results/tables/tab_1.txt
+    log: ../results/logs/save_table.log
+    jobid: 2
+    resources: tmpdir=/var/folders/hl/dt523djx7_q7xjrthzjpdvc40000gn/T
+
+[Wed Jan  5 14:06:05 2022]
+Finished job 2.
+1 of 4 steps (25%) done
+[Wed Jan  5 14:06:05 2022]
+Finished job 3.
+2 of 4 steps (50%) done
+[Wed Jan  5 14:06:05 2022]
+Error in rule make_histogram:
+    jobid: 4
+    output: ../results/plots/hist_1.pdf
+    log: ../results/logs/make_histogram.log (check log file(s) for error message)
+    shell:
+        Rscript --no-save --no-restore --verbose scripts/figures/hist_penguins.R             --data scripts/data/penguins.csv             --out ../results/plots/hist_1.pdf
+        (one of the commands exited with non-zero exit code; note that snakemake uses bash strict mode!)
+
+Shutting down, this might take some time.
+Exiting because a job execution failed. Look above for error message
+Complete log: /Users/corrado/Documents/snakemake_workflows/snakemake_playground_master/playground/workflow/.snakemake/log/2022-01-05T140603.329357.snakemake.log

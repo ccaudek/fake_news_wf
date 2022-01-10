@@ -1,0 +1,4 @@
+CreateRuleException in line 2 of /Users/corrado/Documents/snakemake_workflows/snakemake_playground_master/playground/workflow/rules/histogram.smk:
+The name make_histogram is already used by another rule
+  File "/Users/corrado/Documents/snakemake_workflows/snakemake_playground_master/playground/workflow/Snakefile", line 101, in <module>
+  File "/Users/corrado/Documents/snakemake_workflows/snakemake_playground_master/playground/workflow/rules/histogram.smk", line 2, in <module>

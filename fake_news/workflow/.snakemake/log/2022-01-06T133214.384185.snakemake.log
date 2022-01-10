@@ -1,0 +1,8 @@
+Building DAG of jobs...
+Creating report...
+Downloading resources and rendering HTML.
+Loading script code for rule save_figures
+Loading script code for rule save_table
+Loading script code for rule make_report
+Loading script code for rule make_histogram
+Report created: report.html.

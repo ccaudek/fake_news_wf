@@ -1,0 +1,61 @@
+Building DAG of jobs...
+Using shell: /bin/bash
+Provided cores: 4
+Rules claiming more threads will be scaled down.
+Job stats:
+job             count    min threads    max threads
+------------  -------  -------------  -------------
+all                 1              1              1
+make_report         1              1              1
+save_figures        1              1              1
+save_table          1              1              1
+total               4              1              1
+
+Select jobs to execute...
+
+[Wed Jan  5 11:47:09 2022]
+rule save_figures:
+    input: scripts/data/penguins.csv
+    output: ../results/plots/figure_1.pdf, ../results/plots/figure_2.pdf, ../results/data/processed/penguin_subset.rds
+    log: ../results/logs/save_figures.log
+    jobid: 1
+    resources: tmpdir=/var/folders/hl/dt523djx7_q7xjrthzjpdvc40000gn/T
+
+[Wed Jan  5 11:47:11 2022]
+Finished job 1.
+1 of 4 steps (25%) done
+Select jobs to execute...
+
+[Wed Jan  5 11:47:11 2022]
+rule make_report:
+    input: ../results/data/processed/penguin_subset.rds, ../results/plots/figure_2.pdf
+    output: ../results/reports/report.html
+    jobid: 3
+    resources: tmpdir=/var/folders/hl/dt523djx7_q7xjrthzjpdvc40000gn/T
+
+[Wed Jan  5 11:47:11 2022]
+rule save_table:
+    input: ../results/data/processed/penguin_subset.rds
+    output: ../results/tables/tab_1.txt
+    log: ../results/logs/save_table.log
+    jobid: 2
+    resources: tmpdir=/var/folders/hl/dt523djx7_q7xjrthzjpdvc40000gn/T
+
+[Wed Jan  5 11:47:13 2022]
+Finished job 3.
+2 of 4 steps (50%) done
+[Wed Jan  5 11:47:13 2022]
+Finished job 2.
+3 of 4 steps (75%) done
+Select jobs to execute...
+
+[Wed Jan  5 11:47:13 2022]
+localrule all:
+    input: ../results/plots/figure_1.pdf, ../results/plots/figure_2.pdf, ../results/data/processed/penguin_subset.rds, ../results/tables/tab_1.txt, ../results/reports/report.html
+    jobid: 0
+    resources: tmpdir=/var/folders/hl/dt523djx7_q7xjrthzjpdvc40000gn/T
+
+[Wed Jan  5 11:47:13 2022]
+Finished job 0.
+4 of 4 steps (100%) done
+Complete log: /Users/corrado/Documents/snakemake_workflows/snakemake_playground_master/playground/workflow/.snakemake/log/2022-01-05T114709.121589.snakemake.log

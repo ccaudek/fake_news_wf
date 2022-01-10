@@ -1,0 +1,35 @@
+Building DAG of jobs...
+Using shell: /bin/bash
+Provided cores: 4
+Rules claiming more threads will be scaled down.
+Job stats:
+job               count    min threads    max threads
+--------------  -------  -------------  -------------
+all                   1              1              1
+make_histogram        1              1              1
+total                 2              1              1
+
+Select jobs to execute...
+
+[Wed Jan  5 12:46:35 2022]
+rule make_histogram:
+    input: scripts/data/penguins.csv
+    output: ../results/plots/hist_1.pdf
+    log: ../results/logs/make_histogram.log
+    jobid: 4
+    resources: tmpdir=/var/folders/hl/dt523djx7_q7xjrthzjpdvc40000gn/T
+
+[Wed Jan  5 12:46:35 2022]
+Error in rule make_histogram:
+    jobid: 4
+    output: ../results/plots/hist_1.pdf
+    log: ../results/logs/make_histogram.log (check log file(s) for error message)
+    shell:
+        
+        Rscript scripts/figures/histogram_penguins.R
+        
+        (one of the commands exited with non-zero exit code; note that snakemake uses bash strict mode!)
+
+Shutting down, this might take some time.
+Exiting because a job execution failed. Look above for error message
+Complete log: /Users/corrado/Documents/snakemake_workflows/snakemake_playground_master/playground/workflow/.snakemake/log/2022-01-05T124634.851091.snakemake.log

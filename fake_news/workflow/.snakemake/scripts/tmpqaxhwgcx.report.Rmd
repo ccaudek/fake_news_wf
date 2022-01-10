@@ -1,0 +1,143 @@
+---
+title: "Test Report"
+author:
+    - "Corrado Caudek"
+date: "`r format(Sys.time(), '%d %B, %Y')`"
+params:
+   rmd: "report.Rmd"
+output:
+  html_document:
+  highlight: tango
+  number_sections: no
+  theme: default
+  toc: yes
+  toc_depth: 3
+  toc_float:
+    collapsed: no
+    smooth_scroll: yes
+---
+            ```{r, echo=FALSE, message=FALSE, warning=FALSE}
+
+######## snakemake preamble start (automatically inserted, do not edit) ########
+library(methods)
+Snakemake <- setClass(
+    "Snakemake",
+    slots = c(
+        input = "list",
+        output = "list",
+        params = "list",
+        wildcards = "list",
+        threads = "numeric",
+        log = "list",
+        resources = "list",
+        config = "list",
+        rule = "character",
+        bench_iteration = "numeric",
+        scriptdir = "character",
+        source = "function"
+    )
+)
+snakemake <- Snakemake(
+    input = list('../results/data/processed/penguin_subset.rds'),
+    output = list('../results/reports/report.html'),
+    params = list('scripts/data/penguins.csv', '../results/tables/tab_1.txt', "data" = 'scripts/data/penguins.csv', "second_param" = '../results/tables/tab_1.txt'),
+    wildcards = list(),
+    threads = 1,
+    log = list(),
+    resources = list('tmpdir', "tmpdir" = '/var/folders/hl/dt523djx7_q7xjrthzjpdvc40000gn/T'),
+    config = list("raw_data" = 'scripts/data/penguins.csv'),
+    rule = 'make_report',
+    bench_iteration = as.numeric(NA),
+    scriptdir = '/Users/corrado/_repositories/snakemake_playground/playground/workflow/rules/../scripts/reports',
+    source = function(...){
+        wd <- getwd()
+        setwd(snakemake@scriptdir)
+        source(...)
+        setwd(wd)
+    }
+)
+
+######## snakemake preamble end #########
+
+            ```
+
+
+
+```{r}
+library("tidyverse")
+library("knitr")
+library("rmarkdown")
+```
+
+## A title
+
+This is an R Markdown document.  Here I print the path that is currently used:
+
+```{r}
+getwd()
+```
+
+This script uses the dataset `r snakemake@input[[1]]` that has been extracted from `r snakemake@params[["data"]]`.
+
+Let's make a summary of the data:
+
+```{r}
+d <- readRDS(snakemake@input[[1]])
+summary(d)
+```
+
+Here I generate a plot from the input data:
+
+```{r}
+d %>%
+    ggplot(
+        aes(flipper_length_mm, body_mass_g)
+    ) +
+    geom_point()
+```
+
+### Syntax note
+
+Here I print a path passed through the snakefile object. Here it is:
+
+`r snakemake@params[["second_param"]]`
+
+Note the syntax used in the .smk rule: `rules.save_table.output.tab1`.
+
+```
+rule make_report:
+    input:
+        "../results/data/processed/penguin_subset.rds"
+    output:
+        "../results/reports/report.html"
+    params:
+        data=config["raw_data"],
+        second_param=rules.save_table.output.tab1
+    script:
+        "../scripts/reports/report.Rmd"
+```
+
+This means: in the rule named `save_table`, from the `output` section, get the field named `tab1`.
+
+```
+rule save_table:
+    input:
+        penguins_subset="../results/data/processed/penguin_subset.rds"
+    output:
+        tab1="../results/tables/tab_1.txt"
+    log:
+        "../results/logs/save_table.log"
+    script:
+        "../scripts/tables/make_table.R"
+```
+
+
+### Reading an external txt file
+
+```{r engine='bash', comment=''}
+cat `r snakemake@params[["second_param"]]`
+```
+
+## Source
+<a download="report.Rmd" href="`r base64enc::dataURI(file = params$rmd, mime = 'text/rmd', encoding = 'base64')`">R Markdown source file (to produce this document)</a>
+

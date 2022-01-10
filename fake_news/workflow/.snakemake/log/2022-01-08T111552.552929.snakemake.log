@@ -1,0 +1,3 @@
+KeyError in line 59 of /Users/corrado/Documents/snakemake_workflows/snakemake_playground/playground/workflow/Snakefile:
+'playground_dir'
+  File "/Users/corrado/Documents/snakemake_workflows/snakemake_playground/playground/workflow/Snakefile", line 59, in <module>

@@ -1,0 +1,24 @@
+Building DAG of jobs...
+Using shell: /bin/bash
+Provided cores: 4
+Rules claiming more threads will be scaled down.
+Job stats:
+job           count    min threads    max threads
+----------  -------  -------------  -------------
+save_table        1              1              1
+total             1              1              1
+
+Select jobs to execute...
+
+[Wed Jan  5 10:14:52 2022]
+rule save_table:
+    input: ../results/data/processed/penguin_subset.rds
+    output: ../results/tables/tab_1.txt
+    log: ../results/logs/save_table.log
+    jobid: 0
+    resources: tmpdir=/var/folders/hl/dt523djx7_q7xjrthzjpdvc40000gn/T
+
+[Wed Jan  5 10:14:53 2022]
+Finished job 0.
+1 of 1 steps (100%) done
+Complete log: /Users/corrado/Documents/snakemake_workflows/snakemake_playground_master/playground/workflow/.snakemake/log/2022-01-05T101451.871287.snakemake.log

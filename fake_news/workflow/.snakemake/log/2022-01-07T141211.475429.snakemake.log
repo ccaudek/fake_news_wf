@@ -1,0 +1,34 @@
+Building DAG of jobs...
+Using shell: /bin/bash
+Provided cores: 4
+Rules claiming more threads will be scaled down.
+Job stats:
+job                 count    min threads    max threads
+----------------  -------  -------------  -------------
+my_render_report        1              1              1
+total                   1              1              1
+
+Select jobs to execute...
+
+[Fri Jan  7 14:12:11 2022]
+rule my_render_report:
+    input: scripts/reports/report2.Rmd, scripts/reports/render.R
+    output: my_report.html
+    log: ../results/logs/my_render_report.txt
+    jobid: 0
+    resources: tmpdir=/var/folders/hl/dt523djx7_q7xjrthzjpdvc40000gn/T
+
+[Fri Jan  7 14:12:12 2022]
+Error in rule my_render_report:
+    jobid: 0
+    output: my_report.html
+    log: ../results/logs/my_render_report.txt (check log file(s) for error message)
+
+RuleException:
+CalledProcessError in line 56 of /Users/corrado/Documents/snakemake_workflows/snakemake_playground/playground/workflow/Snakefile:
+Command 'set -euo pipefail;  Rscript --vanilla /Users/corrado/Documents/snakemake_workflows/snakemake_playground/playground/workflow/.snakemake/scripts/tmpmj24mf3f.render.R' returned non-zero exit status 1.
+  File "/Users/corrado/Documents/snakemake_workflows/snakemake_playground/playground/workflow/Snakefile", line 56, in __rule_my_render_report
+  File "/opt/anaconda3/lib/python3.8/concurrent/futures/thread.py", line 57, in run
+Shutting down, this might take some time.
+Exiting because a job execution failed. Look above for error message
+Complete log: /Users/corrado/Documents/snakemake_workflows/snakemake_playground/playground/workflow/.snakemake/log/2022-01-07T141211.475429.snakemake.log

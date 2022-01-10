@@ -1,0 +1,73 @@
+Building DAG of jobs...
+Using shell: /bin/bash
+Provided cores: 4
+Rules claiming more threads will be scaled down.
+Job stats:
+job               count    min threads    max threads
+--------------  -------  -------------  -------------
+all                   1              1              1
+make_histogram        1              1              1
+make_report           1              1              1
+save_figures          1              1              1
+save_table            1              1              1
+total                 5              1              1
+
+Select jobs to execute...
+
+[Fri Jan  7 08:37:07 2022]
+rule make_histogram:
+    input: scripts/data/penguins.csv
+    output: ../results/plots/hist_1.pdf
+    log: ../results/logs/make_histogram.log
+    jobid: 3
+    resources: tmpdir=/var/folders/hl/dt523djx7_q7xjrthzjpdvc40000gn/T
+
+[Fri Jan  7 08:37:07 2022]
+rule save_figures:
+    input: scripts/data/penguins.csv
+    output: ../results/plots/figure_1.pdf, ../results/plots/figure_2.pdf, ../results/data/processed/penguin_subset.rds
+    log: ../results/logs/save_figures.log
+    jobid: 1
+    resources: tmpdir=/var/folders/hl/dt523djx7_q7xjrthzjpdvc40000gn/T
+
+[Fri Jan  7 08:37:10 2022]
+Finished job 3.
+1 of 5 steps (20%) done
+[Fri Jan  7 08:37:10 2022]
+Finished job 1.
+2 of 5 steps (40%) done
+Select jobs to execute...
+
+[Fri Jan  7 08:37:10 2022]
+rule make_report:
+    input: ../results/data/processed/penguin_subset.rds, scripts/data/penguins.csv
+    output: ../results/reports/report.html
+    jobid: 4
+    resources: tmpdir=/var/folders/hl/dt523djx7_q7xjrthzjpdvc40000gn/T
+
+[Fri Jan  7 08:37:10 2022]
+rule save_table:
+    input: ../results/data/processed/penguin_subset.rds
+    output: ../results/tables/tab_1.txt
+    log: ../results/logs/save_table.log
+    jobid: 2
+    resources: tmpdir=/var/folders/hl/dt523djx7_q7xjrthzjpdvc40000gn/T
+
+[Fri Jan  7 08:37:12 2022]
+Finished job 2.
+3 of 5 steps (60%) done
+[Fri Jan  7 08:37:15 2022]
+Finished job 4.
+4 of 5 steps (80%) done
+Select jobs to execute...
+
+[Fri Jan  7 08:37:15 2022]
+localrule all:
+    input: ../results/plots/figure_1.pdf, ../results/plots/figure_2.pdf, ../results/data/processed/penguin_subset.rds, ../results/tables/tab_1.txt, ../results/plots/hist_1.pdf, ../results/reports/report.html
+    jobid: 0
+    resources: tmpdir=/var/folders/hl/dt523djx7_q7xjrthzjpdvc40000gn/T
+
+[Fri Jan  7 08:37:15 2022]
+Finished job 0.
+5 of 5 steps (100%) done
+Complete log: /Users/corrado/_repositories/snakemake_playground/playground/workflow/.snakemake/log/2022-01-07T083707.497152.snakemake.log

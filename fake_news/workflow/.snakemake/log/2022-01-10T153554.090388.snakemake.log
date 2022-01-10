@@ -1,0 +1,31 @@
+Building DAG of jobs...
+Using shell: /bin/bash
+Provided cores: 4
+Rules claiming more threads will be scaled down.
+Job stats:
+job              count    min threads    max threads
+-------------  -------  -------------  -------------
+fit_ref_model        1              1              1
+targets              1              1              1
+total                2              1              1
+
+Select jobs to execute...
+
+[Mon Jan 10 15:35:54 2022]
+rule fit_ref_model:
+    input: ../results/processed_data/pol_dat.rds
+    output: ../results/models/td_ref_pol_fit.rds, ../results/models/td_ref_pol_pp_check.pdf
+    log: ../results/logs/fit_ref_model.log
+    jobid: 3
+    resources: tmpdir=/var/folders/hl/dt523djx7_q7xjrthzjpdvc40000gn/T
+
+Waiting at most 5 seconds for missing files.
+MissingOutputException in line 1 of /Users/corrado/_repositories/fake_news_wf/fake_news/workflow/rules/save_fit_ref_model.smk:
+Job Missing files after 5 seconds:
+../results/models/td_ref_pol_fit.rds
+../results/models/td_ref_pol_pp_check.pdf
+This might be due to filesystem latency. If that is the case, consider to increase the wait time with --latency-wait.
+Job id: 3 completed successfully, but some output files are missing. 3
+Shutting down, this might take some time.
+Exiting because a job execution failed. Look above for error message
+Complete log: /Users/corrado/_repositories/fake_news_wf/fake_news/workflow/.snakemake/log/2022-01-10T153554.090388.snakemake.log

@@ -1,0 +1,36 @@
+Building DAG of jobs...
+Using shell: /bin/bash
+Provided cores: 4
+Rules claiming more threads will be scaled down.
+Job stats:
+job                         count    min threads    max threads
+------------------------  -------  -------------  -------------
+remove_outliers_and_tidy        1              1              1
+targets                         1              1              1
+total                           2              1              1
+
+Select jobs to execute...
+
+[Mon Jan 10 11:29:14 2022]
+rule remove_outliers_and_tidy:
+    input: scripts/data/fake_news_raw_data.rds
+    output: ../results/processed_data/fake_news_tidy_data.rds
+    log: ../results/logs/remove_outliers_and_tidy.log
+    jobid: 1
+    resources: tmpdir=/var/folders/hl/dt523djx7_q7xjrthzjpdvc40000gn/T
+
+[Mon Jan 10 11:29:40 2022]
+Finished job 1.
+1 of 2 steps (50%) done
+Select jobs to execute...
+
+[Mon Jan 10 11:29:40 2022]
+localrule targets:
+    input: ../results/processed_data/fake_news_tidy_data.rds
+    jobid: 0
+    resources: tmpdir=/var/folders/hl/dt523djx7_q7xjrthzjpdvc40000gn/T
+
+[Mon Jan 10 11:29:40 2022]
+Finished job 0.
+2 of 2 steps (100%) done
+Complete log: /Users/corrado/_repositories/fake_news_wf/fake_news/workflow/.snakemake/log/2022-01-10T112914.394996.snakemake.log

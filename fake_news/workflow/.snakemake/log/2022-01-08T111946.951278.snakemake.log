@@ -1,0 +1,3 @@
+TypeError in line 20 of /Users/corrado/Documents/snakemake_workflows/snakemake_playground/playground/workflow/Snakefile:
+unsupported operand type(s) for +: 'LocalSourceFile' and 'str'
+  File "/Users/corrado/Documents/snakemake_workflows/snakemake_playground/playground/workflow/Snakefile", line 20, in <module>

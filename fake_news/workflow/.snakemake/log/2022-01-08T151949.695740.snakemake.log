@@ -1,0 +1,4 @@
+NameError in line 4 of /Users/corrado/Documents/snakemake_workflows/snakemake_playground/playground/workflow/rules/brm_fit_model.smk:
+name 'save_figures' is not defined
+  File "/Users/corrado/Documents/snakemake_workflows/snakemake_playground/playground/workflow/Snakefile", line 41, in <module>
+  File "/Users/corrado/Documents/snakemake_workflows/snakemake_playground/playground/workflow/rules/brm_fit_model.smk", line 4, in <module>

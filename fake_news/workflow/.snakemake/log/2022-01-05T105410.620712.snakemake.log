@@ -1,0 +1,34 @@
+Building DAG of jobs...
+Using shell: /bin/bash
+Provided cores: 4
+Rules claiming more threads will be scaled down.
+Job stats:
+job             count    min threads    max threads
+------------  -------  -------------  -------------
+save_figures        1              1              1
+total               1              1              1
+
+Select jobs to execute...
+
+[Wed Jan  5 10:54:10 2022]
+rule save_figures:
+    input: scripts/data/penguins.csv
+    output: ../results/plots/figure_1.pdf, ../results/plots/figure_2.pdf, ../results/data/processed/penguin_subset.rds
+    log: ../results/logs/save_figures.log
+    jobid: 0
+    resources: tmpdir=/var/folders/hl/dt523djx7_q7xjrthzjpdvc40000gn/T
+
+[Wed Jan  5 10:54:10 2022]
+Error in rule save_figures:
+    jobid: 0
+    output: ../results/plots/figure_1.pdf, ../results/plots/figure_2.pdf, ../results/data/processed/penguin_subset.rds
+    log: ../results/logs/save_figures.log (check log file(s) for error message)
+
+RuleException:
+ValueError in line 75 of /Users/corrado/Documents/snakemake_workflows/snakemake_playground_master/playground/workflow/Snakefile:
+Unsupported value for conversion into R: /Users/corrado/Documents/snakemake_workflows/snakemake_playground_master/playground/workflow
+  File "/Users/corrado/Documents/snakemake_workflows/snakemake_playground_master/playground/workflow/Snakefile", line 75, in __rule_save_figures
+  File "/opt/anaconda3/envs/snakemake/lib/python3.10/concurrent/futures/thread.py", line 58, in run
+Shutting down, this might take some time.
+Exiting because a job execution failed. Look above for error message
+Complete log: /Users/corrado/Documents/snakemake_workflows/snakemake_playground_master/playground/workflow/.snakemake/log/2022-01-05T105410.620712.snakemake.log

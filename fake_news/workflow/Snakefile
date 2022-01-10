@@ -1,0 +1,78 @@
+# Fake news workflow
+#
+
+
+# Require Snakemake >= this version
+from snakemake.utils import min_version
+min_version("6.12.3")
+
+from pathlib import Path
+import os
+
+# print(f"Working directory: {os.getcwd()}")
+print(f"Current directory: {Path.cwd()}")
+print(f"Home directory: {Path.home()}")
+path_wd = Path.cwd();
+print(f"Parent of working directory: {path_wd.parent}")
+
+# my_basedir = workflow.current_basedir
+
+configfile: "../config/config.yaml"
+
+report: "report/workflow.rst"
+
+rule targets:
+    input:
+        "../results/processed_data/fake_news_tidy_data.rds",
+        "../results/processed_data/pol_dat.rds",
+        "../results/processed_data/covid_dat.rds",
+        "../results/models/td_ref_pol_fit.rds",
+        "../results/models/td_ref_pol_pp_check.pdf",
+        "../results/models/td_ref_pol_loo.pdf"
+
+        # "../results/plots/figure_1.pdf",
+        # "../results/plots/figure_2.png",
+        # "../results/data/processed/penguin_subset.rds",
+        # "../results/tables/tab_1.txt",
+        # "../results/plots/hist_1.pdf",
+        # "../results/reports/report.html",
+        # "../results/brms/fit_01.rds",
+        # "../results/brms/table_1.csv"
+        #"scripts/reports/my_report.html"
+
+
+include: "rules/common.smk"
+include: "rules/tidy_data.smk"
+include: "rules/split_data.smk"
+include: "rules/save_fit_ref_model.smk"
+# include: "rules/eda.smk"
+# include: "rules/histogram.smk"
+# include: "rules/brm_fit_model.smk"
+
+# Because of the directory structure, it is simpler to put the make_report
+# rule in the Snakefile.
+
+# It is not possible to specify the address of the figures in `input:`, because
+# after a clean such figures do not exist. Instead, the address of the figures
+# that is created *before* the make_report rule is executed is specified in
+# `params:`. Because the `results` folder is one level up from the working
+# directory, the specification of the path is obtained with the method described
+# in the README.md file.
+# Another method is to specify the first part of the path (until `playground`)
+# in the config.yaml file, and then to add the second part of the path as
+# indicated in the commented line.
+
+# rule make_report:
+#     input:
+#         data=config["raw_data"],
+#         subset_data="../results/data/processed/penguin_subset.rds",
+#         table_data=rules.save_table.output.tab1
+#     output:
+#         "../results/reports/report.html"
+#     params:
+#         #pdf_fig1=config["playground_dir"] + "results/plots/figure_1.pdf"
+#         pdf_fig1=os.path.join(path_wd.parent, "results/plots/figure_1.pdf")
+#     log:
+#         mylog="../results/logs/make_report.log"
+#     script:
+#         "scripts/reports/report.Rmd"

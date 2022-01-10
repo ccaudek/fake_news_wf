@@ -1,0 +1,4 @@
+Building DAG of jobs...
+MissingInputException in line 1 of /Users/corrado/_repositories/snakemake_playground/playground/workflow/rules/render_report.smk:
+Missing input files for rule make_report:
+../results/plots/fig_1.pdf

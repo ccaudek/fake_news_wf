@@ -1,0 +1,5 @@
+Building DAG of jobs...
+MissingInputException in line 36 of /Users/corrado/Documents/snakemake_workflows/snakemake_playground_master/playground/workflow/Snakefile:
+Missing input files for rule make_report:
+../results/plots/figure_2.pdf
+../results/data/processed/penguin_subset.rds

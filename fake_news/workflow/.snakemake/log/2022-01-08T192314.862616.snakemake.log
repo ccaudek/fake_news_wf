@@ -1,0 +1,14 @@
+Building DAG of jobs...
+Creating report...
+Adding figure_1.pdf (0.023 MB).
+Command convert not in $PATH. Install imagemagick in order to have embedded images and pdfs in the report.
+Adding figure_2.pdf (0.022 MB).
+Command convert not in $PATH. Install imagemagick in order to have embedded images and pdfs in the report.
+Downloading resources and rendering HTML.
+Loading script code for rule save_figures
+Loading script code for rule save_table
+Loading script code for rule make_histogram
+Loading script code for rule make_report
+Loading script code for rule fit_model
+Loading script code for rule summary_fit
+Report created: report.html.

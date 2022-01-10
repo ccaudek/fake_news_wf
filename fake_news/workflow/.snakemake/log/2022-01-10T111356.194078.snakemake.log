@@ -1,0 +1,4 @@
+Building DAG of jobs...
+MissingInputException in line 1 of /Users/corrado/_repositories/fake_news_wf/fake_news/workflow/rules/tidy_data.smk:
+Missing input files for rule remove_outliers_and_tidy:
+scripts/data/fakenews_data.rds

@@ -1,0 +1,36 @@
+Building DAG of jobs...
+Using shell: /bin/bash
+Provided cores: 4
+Rules claiming more threads will be scaled down.
+Job stats:
+job               count    min threads    max threads
+--------------  -------  -------------  -------------
+all                   1              1              1
+make_histogram        1              1              1
+total                 2              1              1
+
+Select jobs to execute...
+
+[Wed Jan  5 11:17:24 2022]
+rule make_histogram:
+    input: scripts/data/penguins.csv
+    output: ../results/plots/hist_1.pdf
+    log: ../results/logs/make_histogram.log
+    jobid: 4
+    resources: tmpdir=/var/folders/hl/dt523djx7_q7xjrthzjpdvc40000gn/T
+
+[Wed Jan  5 11:17:24 2022]
+Error in rule make_histogram:
+    jobid: 4
+    output: ../results/plots/hist_1.pdf
+    log: ../results/logs/make_histogram.log (check log file(s) for error message)
+
+RuleException:
+WorkflowError in line 14 of /Users/corrado/Documents/snakemake_workflows/snakemake_playground_master/playground/workflow/rules/histogram.smk:
+Failed to open source file /Users/corrado/Documents/snakemake_workflows/snakemake_playground_master/playground/workflow/rules/scripts/figures/histogram_penguins.R
+FileNotFoundError: [Errno 2] No such file or directory: '/Users/corrado/Documents/snakemake_workflows/snakemake_playground_master/playground/workflow/rules/scripts/figures/histogram_penguins.R'
+  File "/Users/corrado/Documents/snakemake_workflows/snakemake_playground_master/playground/workflow/rules/histogram.smk", line 14, in __rule_make_histogram
+  File "/opt/anaconda3/envs/snakemake/lib/python3.10/concurrent/futures/thread.py", line 58, in run
+Shutting down, this might take some time.
+Exiting because a job execution failed. Look above for error message
+Complete log: /Users/corrado/Documents/snakemake_workflows/snakemake_playground_master/playground/workflow/.snakemake/log/2022-01-05T111724.280338.snakemake.log

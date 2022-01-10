@@ -1,0 +1,9 @@
+{
+    "sortOrder": [
+        {
+            "columnIndex": 2,
+            "ascending": true
+        }
+    ],
+    "path": "~/_repositories/fake_news_wf/fake_news/workflow/scripts/util_functions"
+}

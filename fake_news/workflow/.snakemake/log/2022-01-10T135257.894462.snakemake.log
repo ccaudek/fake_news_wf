@@ -1,0 +1,35 @@
+Building DAG of jobs...
+Using shell: /bin/bash
+Provided cores: 4
+Rules claiming more threads will be scaled down.
+Job stats:
+job              count    min threads    max threads
+-------------  -------  -------------  -------------
+fit_ref_model        1              1              1
+targets              1              1              1
+total                2              1              1
+
+Select jobs to execute...
+
+[Mon Jan 10 13:52:58 2022]
+rule fit_ref_model:
+    input: ../results/processed_data/pol_dat.rds
+    output: ../results/models/td_ref_pol_fit.rds
+    log: ../results/logs/fit_ref_model.log
+    jobid: 3
+    resources: tmpdir=/var/folders/hl/dt523djx7_q7xjrthzjpdvc40000gn/T
+
+[Mon Jan 10 13:53:03 2022]
+Error in rule fit_ref_model:
+    jobid: 3
+    output: ../results/models/td_ref_pol_fit.rds
+    log: ../results/logs/fit_ref_model.log (check log file(s) for error message)
+
+RuleException:
+CalledProcessError in line 10 of /Users/corrado/_repositories/fake_news_wf/fake_news/workflow/rules/save_fit_ref_model.smk:
+Command 'set -euo pipefail;  Rscript --vanilla /Users/corrado/_repositories/fake_news_wf/fake_news/workflow/.snakemake/scripts/tmp0cg202os.01_fit_ref_model_pol.R' returned non-zero exit status 1.
+  File "/Users/corrado/_repositories/fake_news_wf/fake_news/workflow/rules/save_fit_ref_model.smk", line 10, in __rule_fit_ref_model
+  File "/opt/anaconda3/lib/python3.8/concurrent/futures/thread.py", line 57, in run
+Shutting down, this might take some time.
+Exiting because a job execution failed. Look above for error message
+Complete log: /Users/corrado/_repositories/fake_news_wf/fake_news/workflow/.snakemake/log/2022-01-10T135257.894462.snakemake.log

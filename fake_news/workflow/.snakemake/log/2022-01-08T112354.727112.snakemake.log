@@ -1,0 +1,3 @@
+ImportError in line 12 of /Users/corrado/Documents/snakemake_workflows/snakemake_playground/playground/workflow/Snakefile:
+cannot import name 'util_functions' from 'scripts' (/opt/anaconda3/lib/python3.8/site-packages/scripts/__init__.py)
+  File "/Users/corrado/Documents/snakemake_workflows/snakemake_playground/playground/workflow/Snakefile", line 12, in <module>

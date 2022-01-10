@@ -1,0 +1,21 @@
+Building DAG of jobs...
+Using shell: /bin/bash
+Provided cores: 4
+Rules claiming more threads will be scaled down.
+Job stats:
+job      count    min threads    max threads
+-----  -------  -------------  -------------
+clean        1              1              1
+total        1              1              1
+
+Select jobs to execute...
+
+[Wed Jan  5 09:52:55 2022]
+rule clean:
+    input: ../results/logs, ../results/plots, ../results/tables
+    log: ../results/logs/clean.log
+    jobid: 0
+    resources: tmpdir=/var/folders/hl/dt523djx7_q7xjrthzjpdvc40000gn/T
+
+RuleException in line 47 of /Users/corrado/Documents/snakemake_workflows/snakemake_playground_master/playground/workflow/Snakefile:
+NameError: The name 'dir' is unknown in this context. Please make sure that you defined that variable. Also note that braces not used for variable access have to be escaped by repeating them, i.e. {{print $1}}

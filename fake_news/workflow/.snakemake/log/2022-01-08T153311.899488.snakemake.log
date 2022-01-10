@@ -1,0 +1,29 @@
+Building DAG of jobs...
+Using shell: /bin/bash
+Provided cores: 4
+Rules claiming more threads will be scaled down.
+Job stats:
+job          count    min threads    max threads
+---------  -------  -------------  -------------
+fit_model        1              1              1
+total            1              1              1
+
+Select jobs to execute...
+
+[Sat Jan  8 15:33:12 2022]
+rule fit_model:
+    input: ../results/data/processed/penguin_subset.rds
+    output: ../results/brms/fit_01.rds
+    log: ../results/logs/fit_model.log
+    jobid: 0
+    resources: tmpdir=/var/folders/hl/dt523djx7_q7xjrthzjpdvc40000gn/T
+
+Waiting at most 5 seconds for missing files.
+MissingOutputException in line 2 of /Users/corrado/Documents/snakemake_workflows/snakemake_playground/playground/workflow/rules/brm_fit_model.smk:
+Job Missing files after 5 seconds:
+../results/brms/fit_01.rds
+This might be due to filesystem latency. If that is the case, consider to increase the wait time with --latency-wait.
+Job id: 0 completed successfully, but some output files are missing. 0
+Shutting down, this might take some time.
+Exiting because a job execution failed. Look above for error message
+Complete log: /Users/corrado/Documents/snakemake_workflows/snakemake_playground/playground/workflow/.snakemake/log/2022-01-08T153311.899488.snakemake.log

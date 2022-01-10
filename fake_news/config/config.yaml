@@ -1,0 +1,7 @@
+# This file should contain everything to configure the workflow on a global scale.
+
+raw_data: "scripts/data/fake_news_raw_data.rds"
+
+# Folders created in output by the rules. This list is used in the clean rule to
+# remove all the outputs that have been created.
+RES_DIRS: ["logs", "plots", "tables", "data", "reports"]

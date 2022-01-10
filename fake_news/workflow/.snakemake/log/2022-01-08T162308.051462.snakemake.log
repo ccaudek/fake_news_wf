@@ -1,0 +1,24 @@
+Building DAG of jobs...
+Using shell: /bin/bash
+Provided cores: 4
+Rules claiming more threads will be scaled down.
+Job stats:
+job            count    min threads    max threads
+-----------  -------  -------------  -------------
+summary_fit        1              1              1
+total              1              1              1
+
+Select jobs to execute...
+
+[Sat Jan  8 16:23:08 2022]
+rule summary_fit:
+    input: ../results/brms/fit_01.rds
+    output: ../results/brms/table_1.csv
+    log: ../results/logs/summary_fit.log
+    jobid: 0
+    resources: tmpdir=/var/folders/hl/dt523djx7_q7xjrthzjpdvc40000gn/T
+
+[Sat Jan  8 16:23:12 2022]
+Finished job 0.
+1 of 1 steps (100%) done
+Complete log: /Users/corrado/Documents/snakemake_workflows/snakemake_playground/playground/workflow/.snakemake/log/2022-01-08T162308.051462.snakemake.log

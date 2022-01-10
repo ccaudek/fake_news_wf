@@ -1,0 +1,33 @@
+Building DAG of jobs...
+Using shell: /bin/bash
+Provided cores: 4
+Rules claiming more threads will be scaled down.
+Job stats:
+job            count    min threads    max threads
+-----------  -------  -------------  -------------
+all                1              1              1
+make_report        1              1              1
+total              2              1              1
+
+Select jobs to execute...
+
+[Thu Jan  6 15:42:52 2022]
+rule make_report:
+    input: ../results/data/processed/penguin_subset.rds, ../results/plots/figure_2.pdf, ../results/plots/figure_1.pdf
+    output: ../results/reports/report.html
+    jobid: 3
+    resources: tmpdir=/var/folders/hl/dt523djx7_q7xjrthzjpdvc40000gn/T
+
+[Thu Jan  6 15:42:54 2022]
+Error in rule make_report:
+    jobid: 3
+    output: ../results/reports/report.html
+
+RuleException:
+CalledProcessError in line 11 of /Users/corrado/_repositories/snakemake_playground/playground/workflow/rules/render_report.smk:
+Command 'set -euo pipefail;  Rscript --vanilla -e 'rmarkdown::render("/Users/corrado/_repositories/snakemake_playground/playground/workflow/.snakemake/scripts/tmp_j9in1sa.report.Rmd", output_file="/Users/corrado/_repositories/snakemake_playground/playground/results/reports/report.html", quiet=TRUE, knit_root_dir = "/Users/corrado/_repositories/snakemake_playground/playground/workflow", params = list(rmd="/Users/corrado/_repositories/snakemake_playground/playground/workflow/.snakemake/scripts/tmp_j9in1sa.report.Rmd"))'' returned non-zero exit status 1.
+  File "/Users/corrado/_repositories/snakemake_playground/playground/workflow/rules/render_report.smk", line 11, in __rule_make_report
+  File "/opt/anaconda3/lib/python3.8/concurrent/futures/thread.py", line 57, in run
+Shutting down, this might take some time.
+Exiting because a job execution failed. Look above for error message
+Complete log: /Users/corrado/_repositories/snakemake_playground/playground/workflow/.snakemake/log/2022-01-06T154252.076748.snakemake.log
