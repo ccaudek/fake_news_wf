@@ -1,0 +1,3 @@
+Building DAG of jobs...
+Nothing to be done (all requested files are present and up to date).
+Complete log: /Users/corrado/_repositories/fake_news_wf/fake_news/workflow/.snakemake/log/2022-01-11T092447.369625.snakemake.log

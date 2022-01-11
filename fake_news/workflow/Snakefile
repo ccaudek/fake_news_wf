@@ -3,16 +3,18 @@
 
 
 # Require Snakemake >= this version
+import os
+from pathlib import Path
+
 from snakemake.utils import min_version
+
 min_version("6.12.3")
 
-from pathlib import Path
-import os
 
 # print(f"Working directory: {os.getcwd()}")
 print(f"Current directory: {Path.cwd()}")
 print(f"Home directory: {Path.home()}")
-path_wd = Path.cwd();
+path_wd = Path.cwd()
 print(f"Parent of working directory: {path_wd.parent}")
 
 # my_basedir = workflow.current_basedir
@@ -28,7 +30,13 @@ rule targets:
         "../results/processed_data/covid_dat.rds",
         "../results/models/td_ref_pol_fit.rds",
         "../results/models/td_ref_pol_pp_check.pdf",
-        "../results/models/td_ref_pol_loo.pdf"
+        #
+        "../results/models/varsel_td_pol.rds"
+
+        # "../results/models/td_plot_pred_subset.pdf",
+        # "../results/models/td_yhat_tot_y.pdf",
+        # "../results/models/td_yhat_subset_y.pdf"
+        # "../results/models/td_ref_pol_loo.pdf"
 
         # "../results/plots/figure_1.pdf",
         # "../results/plots/figure_2.png",
@@ -44,7 +52,8 @@ rule targets:
 include: "rules/common.smk"
 include: "rules/tidy_data.smk"
 include: "rules/split_data.smk"
-include: "rules/save_fit_ref_model.smk"
+include: "rules/fit_ref_model.smk"
+include: "rules/varsel_ref_pol_td.smk"
 # include: "rules/eda.smk"
 # include: "rules/histogram.smk"
 # include: "rules/brm_fit_model.smk"

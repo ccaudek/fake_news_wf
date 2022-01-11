@@ -1,0 +1,5 @@
+Building DAG of jobs...
+MissingInputException in line 26 of /Users/corrado/_repositories/fake_news_wf/fake_news/workflow/Snakefile:
+Missing input files for rule targets:
+../results/models/td_ref_pol_fit.rds
+../results/models/td_ref_pol_pp_check.pdf

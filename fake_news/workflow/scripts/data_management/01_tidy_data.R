@@ -66,14 +66,14 @@ suppressPackageStartupMessages({
 
 print("Loaded packages.")
 
-source(here("scripts", "util_functions", "funs_for_wrangling_data.R"))
+source(here::here("workflow", "scripts", "util_functions", "funs_for_wrangling_data.R"))
 print("Sourced util functions.")
 
 
 # 2.0 GET DATA ------------------------------------------------------------
 
 alldata <- readRDS(
-  here("scripts", "data", "fake_news_raw_data.rds")
+  here::here("workflow", "scripts", "data", "fake_news_raw_data.rds")
 )
 
 print("Got raw data.")

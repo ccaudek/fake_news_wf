@@ -24,7 +24,7 @@ print("Loaded packages.")
 # 2.0 GET DATA ------------------------------------------------------------
 
 # For debugging:
-# d <- 
+# d <-
 #   readRDS("/Users/corrado/_repositories/fake_news_wf/fake_news/results/processed_data/fake_news_tidy_data.rds")
 # print("Got tidy data.")
 

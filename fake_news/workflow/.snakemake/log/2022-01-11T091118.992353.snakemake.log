@@ -1,0 +1,35 @@
+Building DAG of jobs...
+Using shell: /bin/bash
+Provided cores: 4
+Rules claiming more threads will be scaled down.
+Job stats:
+job                         count    min threads    max threads
+------------------------  -------  -------------  -------------
+remove_outliers_and_tidy        1              1              1
+targets                         1              1              1
+total                           2              1              1
+
+Select jobs to execute...
+
+[Tue Jan 11 09:11:19 2022]
+rule remove_outliers_and_tidy:
+    input: scripts/data/fake_news_raw_data.rds
+    output: ../results/processed_data/fake_news_tidy_data.rds
+    log: ../results/logs/remove_outliers_and_tidy.log
+    jobid: 1
+    resources: tmpdir=/var/folders/hl/dt523djx7_q7xjrthzjpdvc40000gn/T
+
+[Tue Jan 11 09:11:23 2022]
+Error in rule remove_outliers_and_tidy:
+    jobid: 1
+    output: ../results/processed_data/fake_news_tidy_data.rds
+    log: ../results/logs/remove_outliers_and_tidy.log (check log file(s) for error message)
+
+RuleException:
+CalledProcessError in line 10 of /Users/corrado/_repositories/fake_news_wf/fake_news/workflow/rules/tidy_data.smk:
+Command 'set -euo pipefail;  Rscript --vanilla /Users/corrado/_repositories/fake_news_wf/fake_news/workflow/.snakemake/scripts/tmpxdsvolur.01_tidy_data.R' returned non-zero exit status 1.
+  File "/Users/corrado/_repositories/fake_news_wf/fake_news/workflow/rules/tidy_data.smk", line 10, in __rule_remove_outliers_and_tidy
+  File "/opt/anaconda3/lib/python3.8/concurrent/futures/thread.py", line 57, in run
+Shutting down, this might take some time.
+Exiting because a job execution failed. Look above for error message
+Complete log: /Users/corrado/_repositories/fake_news_wf/fake_news/workflow/.snakemake/log/2022-01-11T091118.992353.snakemake.log

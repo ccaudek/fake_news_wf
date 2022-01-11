@@ -1,0 +1,36 @@
+Building DAG of jobs...
+Using shell: /bin/bash
+Provided cores: 4
+Rules claiming more threads will be scaled down.
+Job stats:
+job                 count    min threads    max threads
+----------------  -------  -------------  -------------
+targets                 1              1              1
+varsel_pol_model        1              1              1
+total                   2              1              1
+
+Select jobs to execute...
+
+[Tue Jan 11 11:45:02 2022]
+rule varsel_pol_model:
+    input: ../results/models/td_ref_pol_fit.rds, ../results/processed_data/pol_dat.rds
+    output: ../results/models/td_plot_pred_subset.pdf, ../results/models/td_yhat_tot_y.pdf, ../results/models/td_yhat_subset_y.pdf
+    log: ../results/logs/02_varsel_ref_pol_model.log
+    jobid: 4
+    resources: tmpdir=/var/folders/hl/dt523djx7_q7xjrthzjpdvc40000gn/T
+
+[Tue Jan 11 11:45:02 2022]
+Error in rule varsel_pol_model:
+    jobid: 4
+    output: ../results/models/td_plot_pred_subset.pdf, ../results/models/td_yhat_tot_y.pdf, ../results/models/td_yhat_subset_y.pdf
+    log: ../results/logs/02_varsel_ref_pol_model.log (check log file(s) for error message)
+
+RuleException:
+WorkflowError in line 13 of /Users/corrado/_repositories/fake_news_wf/fake_news/workflow/rules/varsel_ref_pol_td.smk:
+Failed to open source file /Users/corrado/_repositories/fake_news_wf/fake_news/workflow/rules/scripts/analysis/02_varsel_ref_pol_model.R
+FileNotFoundError: [Errno 2] No such file or directory: '/Users/corrado/_repositories/fake_news_wf/fake_news/workflow/rules/scripts/analysis/02_varsel_ref_pol_model.R'
+  File "/Users/corrado/_repositories/fake_news_wf/fake_news/workflow/rules/varsel_ref_pol_td.smk", line 13, in __rule_varsel_pol_model
+  File "/opt/anaconda3/lib/python3.8/concurrent/futures/thread.py", line 57, in run
+Shutting down, this might take some time.
+Exiting because a job execution failed. Look above for error message
+Complete log: /Users/corrado/_repositories/fake_news_wf/fake_news/workflow/.snakemake/log/2022-01-11T114502.484566.snakemake.log

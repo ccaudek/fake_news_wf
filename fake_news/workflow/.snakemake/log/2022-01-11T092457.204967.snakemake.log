@@ -1,0 +1,50 @@
+Building DAG of jobs...
+Using shell: /bin/bash
+Provided cores: 4
+Rules claiming more threads will be scaled down.
+Job stats:
+job                         count    min threads    max threads
+------------------------  -------  -------------  -------------
+remove_outliers_and_tidy        1              1              1
+save_train_test_data            1              1              1
+targets                         1              1              1
+total                           3              1              1
+
+Select jobs to execute...
+
+[Tue Jan 11 09:24:57 2022]
+rule remove_outliers_and_tidy:
+    input: scripts/data/fake_news_raw_data.rds
+    output: ../results/processed_data/fake_news_tidy_data.rds
+    log: ../results/logs/remove_outliers_and_tidy.log
+    jobid: 1
+    resources: tmpdir=/var/folders/hl/dt523djx7_q7xjrthzjpdvc40000gn/T
+
+[Tue Jan 11 09:25:22 2022]
+Finished job 1.
+1 of 3 steps (33%) done
+Select jobs to execute...
+
+[Tue Jan 11 09:25:22 2022]
+rule save_train_test_data:
+    input: ../results/processed_data/fake_news_tidy_data.rds
+    output: ../results/processed_data/pol_dat.rds, ../results/processed_data/covid_dat.rds
+    log: ../results/logs/save_train_test_data.log
+    jobid: 2
+    resources: tmpdir=/var/folders/hl/dt523djx7_q7xjrthzjpdvc40000gn/T
+
+[Tue Jan 11 09:25:23 2022]
+Finished job 2.
+2 of 3 steps (67%) done
+Select jobs to execute...
+
+[Tue Jan 11 09:25:23 2022]
+localrule targets:
+    input: ../results/processed_data/fake_news_tidy_data.rds, ../results/processed_data/pol_dat.rds, ../results/processed_data/covid_dat.rds
+    jobid: 0
+    resources: tmpdir=/var/folders/hl/dt523djx7_q7xjrthzjpdvc40000gn/T
+
+[Tue Jan 11 09:25:23 2022]
+Finished job 0.
+3 of 3 steps (100%) done
+Complete log: /Users/corrado/_repositories/fake_news_wf/fake_news/workflow/.snakemake/log/2022-01-11T092457.204967.snakemake.log

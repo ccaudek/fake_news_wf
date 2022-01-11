@@ -15,15 +15,15 @@ get_cv_varsel_obj <- function(fit, VARSEL_NAME) {
   # keyword method. For a simple linear model, the fastest method is to use
   # L1–search, that is the default option. For a more accurate result we recommend
   # running forward search.
-  if (!file.exists(here("code", "scripts", "r_objects", VARSEL_NAME))) {
+  if (!file.exists(here("workflow", "results", "r_objects", VARSEL_NAME))) {
     varsel <- projpred::cv_varsel(
       refmodel,
       method = "forward",
       cores = parallel::detectCores()
     )
-    saveRDS(varsel, here::here("code", "scripts", "r_objects", VARSEL_NAME))
+    saveRDS(varsel, here::here("workflow", "results", "r_objects", VARSEL_NAME))
   } else {
-    varsel <- readRDS(here::here("code", "scripts", "r_objects", VARSEL_NAME))
+    varsel <- readRDS(here::here("workflow", "results", "r_objects", VARSEL_NAME))
   }
   varsel
 }
